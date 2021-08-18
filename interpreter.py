@@ -1,5 +1,8 @@
+from structure.stack import Stack
 from file_manager import loader, output
-from structure.GLC_obj import GLC
+from structure.GLC import GLC
+from structure.greibach_path import GreibachPaths
+from structure.stack import Stack
 from lexical.reviewer import state_and_alpha_review
 import sys
 
@@ -20,14 +23,18 @@ def main(args):
         sl = language.get_state_list()
         al = language.get_alpha_list()
         tl = language.get_transitions_list()
-        initial_state = language.get_initial_state()
+        ist = language.get_initial_state()
 
-        # reviewer
-        state_and_alpha_review(sl, al, tl, initial_state)
+        state_and_alpha_review(sl, al, tl, ist)
 
         output.file_generator("saida_ex1.txt", str(language))
 
+        paths = GreibachPaths(language)
         
+        stack = Stack(ist)
+        #print(language)
+        #print(paths)
+        print(stack)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
