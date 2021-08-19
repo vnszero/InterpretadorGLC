@@ -34,7 +34,7 @@ def main(args):
         stack = Stack(ist)
         #print(language)
         #print(paths)
-        print(stack)
+        #print(stack)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

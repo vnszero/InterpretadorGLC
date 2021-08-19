@@ -1,5 +1,4 @@
 from structure.GLC import GLC
-LAMBDA = '#'
 
 class Path:
     def __init__(self, alpha : str, top : str, stack : str):
@@ -16,9 +15,6 @@ class Path:
 class GreibachPaths:
     def __init__(self, language : GLC):
         self.paths_dict = dict()
-        key = LAMBDA + LAMBDA
-        ist = language.get_initial_state()
-        self.paths_dict[key] = Path(LAMBDA, LAMBDA, ist)
         for transition in language.get_transitions_list():
             alpha = transition[1][0]
             top = transition[0]
