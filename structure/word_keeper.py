@@ -1,5 +1,5 @@
 from typing import List
-from structure.constants import LAMDA
+from structure.constants import LAMBDA
 
 class WordKeeper:
     def __init__(self):
@@ -10,7 +10,7 @@ class WordKeeper:
     
     def insert_word(self, word : str):
         if word == '':
-            word == LAMDA
+            word == LAMBDA
         if not (word in self.word_list):
             self.word_list.append(word)
 

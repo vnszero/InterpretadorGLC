@@ -1,10 +1,11 @@
+from lexical.lambda_terminator import lambda_terminator
 from structure.tree import Tree
 from structure.stack import Stack
 from file_manager import loader, output
 from structure.GLC import GLC
 from structure.greibach_path import GreibachPaths
 from structure.stack import Stack
-from structure.constants import LAMDA
+from structure.constants import LAMBDA
 from structure.word_keeper import WordKeeper
 from lexical.reviewer import state_and_alpha_review
 import sys
@@ -29,7 +30,12 @@ def main(args):
         ist = language.get_initial_state()
         
         state_and_alpha_review(state_l, alpha_l, transition_l, ist)
+        
+        lambda_terminator(language)
 
+        print(language.get_transitions_list())
+        
+        '''
         paths = GreibachPaths(language)
         
         stack = Stack(ist)
@@ -39,15 +45,16 @@ def main(args):
         paths_dict = paths.get_paths_dict()
         
         # verificar se a linguagem gera lambda
-        key = LAMDA + ist
+        key = LAMBDA + ist
         if key in paths_dict.keys():
-            keeper.insert_word(LAMDA)
-            extend_alpha_l = alpha_l + [LAMDA]
+            keeper.insert_word(LAMBDA)
+            extend_alpha_l = alpha_l + [LAMBDA]
 
         tree.get_root().call_next_node(keeper, extend_alpha_l, paths_dict, word_size_limit)
 
         output.file_generator("words.txt", str(keeper))
         output.file_generator("saida_lang.txt", str(language))
+        '''
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

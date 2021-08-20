@@ -2,17 +2,17 @@ from typing import Dict, List
 from structure.stack import Stack
 from structure.greibach_path import Path
 from structure.word_keeper import WordKeeper
-from structure.constants import LAMDA, OVERFLOW
+from structure.constants import LAMBDA, OVERFLOW
 
 class Node:
     def __init__(self, alpha : str, stack : Stack, word : str = '', depth : int = 0):
         self.next = None
-        if alpha == LAMDA:
+        if alpha == LAMBDA:
             # depth keep his old value if LAMBDA
             self.depth = depth
         else:
             self.depth = depth + 1
-        if alpha == LAMDA:
+        if alpha == LAMBDA:
             # keep the old formed word
             self.formed_word = word
         else:
@@ -65,7 +65,7 @@ class Node:
                         pass
 
 class Tree:
-    def __init__(self, stack : Stack, alpha : str = LAMDA):
+    def __init__(self, stack : Stack, alpha : str = LAMBDA):
         self.root = Node(alpha, stack)
     
     def get_root(self) -> Node:

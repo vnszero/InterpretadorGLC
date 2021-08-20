@@ -25,10 +25,10 @@ class GLC:
     def set_alpha_list(self, alpha_list : List):
         self.alpha_list = alpha_list
     
-    def set_transitions_list(self, transitions_list):
+    def set_transitions_list(self, transitions_list : List):
         self.transitions_list = transitions_list
 
-    def set_initial_state(self, initial_state):
+    def set_initial_state(self, initial_state : str):
         self.initial_state = initial_state
 
     def get_state_list(self) -> List:

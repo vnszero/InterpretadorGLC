@@ -1,2 +1,2 @@
-LAMDA = '#'
+LAMBDA = '#'
 OVERFLOW = False
