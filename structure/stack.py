@@ -9,9 +9,13 @@ class Stack:
         self.stack = old_stack
         for term in terms[::-1]:
             self.stack.append(term)
-
+    def get_stack_len(self) -> int:
+        return len(self.stack)
     def get_stack_top(self) -> str:
-        return self.stack.pop()
+        try:
+            return self.stack.pop()
+        except IndexError:
+            return 'END'
 
     def get_stack_full(self) -> List:
         # a copy of the stack to avoid non-capsule trouble

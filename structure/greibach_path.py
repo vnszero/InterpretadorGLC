@@ -1,3 +1,4 @@
+from typing import Dict
 from structure.GLC import GLC
 
 class Path:
@@ -11,6 +12,9 @@ class Path:
 
     def __str__(self) -> str:
         return f'{self.alpha}'+', '+f'{self.top}'+' | '+f'{self.stack}'
+    
+    def get_stack(self) -> str:
+        return self.stack
 
 class GreibachPaths:
     def __init__(self, language : GLC):
@@ -19,7 +23,7 @@ class GreibachPaths:
             alpha = transition[1][0]
             top = transition[0]
             stack = transition[1][1:]
-            key = alpha+top
+            key = alpha + top
             self.paths_dict[key] = Path(alpha, top, stack)
 
     def __repr__(self) -> str:
@@ -33,3 +37,6 @@ class GreibachPaths:
         for key in self.paths_dict:
             string += f'{self.paths_dict[key]}'+'\n'
         return string
+    
+    def get_paths_dict(self) -> Dict:
+        return self.paths_dict
