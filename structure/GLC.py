@@ -42,3 +42,6 @@ class GLC:
 
     def get_initial_state(self) -> str:
         return self.initial_state
+
+    def insert_into_transition_list(self, transition : List):
+        self.transitions_list.append(transition)

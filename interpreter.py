@@ -1,3 +1,4 @@
+from lexical.unitary_rule_terminator import unitary_rule_terminator
 from lexical.lambda_terminator import lambda_terminator
 from structure.tree import Tree
 from structure.stack import Stack
@@ -32,7 +33,7 @@ def main(args):
         state_and_alpha_review(state_l, alpha_l, transition_l, ist)
         
         lambda_terminator(language)
-
+        unitary_rule_terminator(language)
         print(language.get_transitions_list())
         
         '''

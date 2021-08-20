@@ -10,6 +10,8 @@ def lambda_terminator(language : GLC):
     for transition in language.get_transitions_list():
         if transition[1] == LAMBDA:
             null_states.append(transition[0])
+            if transition[0] == language.get_initial_state():
+                new_transition_rules.append(transition)
         else:
             new_transition_rules.append(transition)
     check_again = True
@@ -29,7 +31,6 @@ def lambda_terminator(language : GLC):
 
             position = 0
             while position < len(transition[1]):
-        
                 if transition[1][position] in null_states:
                     new_rule = remove_substring(position, transition[1])
                     if new_rule == '':
