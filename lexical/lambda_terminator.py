@@ -1,8 +1,6 @@
+from lexical.usefull_funct import remove_substring
 from structure.GLC import GLC
 from structure.constants import LAMBDA
-
-def remove_substring(pos : int, string : str) -> str:
-    return string[:pos] + string[pos+1:]
 
 def lambda_terminator(language : GLC):
     null_variables = []

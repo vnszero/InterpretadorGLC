@@ -9,8 +9,10 @@ class Stack:
         self.stack = old_stack
         for term in terms[::-1]:
             self.stack.append(term)
+            
     def get_stack_len(self) -> int:
         return len(self.stack)
+
     def get_stack_top(self) -> str:
         try:
             return self.stack.pop()
@@ -35,3 +37,11 @@ class Stack:
         for term in self.stack[::-1]:
             string += term + '\n'
         return string
+
+    def put_one_on_top(self, top : str):
+        self.stack.append(top)
+    
+    def is_empty(self) -> bool:
+        if self.stack:
+            return False
+        return True

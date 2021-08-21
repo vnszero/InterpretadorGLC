@@ -1,2 +1,4 @@
 LAMBDA = '#'
 OVERFLOW = False
+POS_INC = 1
+NEG_INC = -1

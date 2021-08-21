@@ -1,17 +1,7 @@
+from structure.constants import POS_INC
+from lexical.usefull_funct import find_new_var_name
 from structure.GLC import GLC
-from structure.constants import LAMBDA
 from typing import List
-
-def find_new_var_name(upper_ASCII : List, used_variables : List) -> str:
-    name = None
-    while name == None:
-        if chr(upper_ASCII[0]) in used_variables:
-            # already exists, call next
-            upper_ASCII[0] += 1
-        else:
-            name = chr(upper_ASCII[0])
-            upper_ASCII[0] += 1
-    return name
 
 def alpha_to_var(language : GLC):
     upper_ASCII = [65]
@@ -20,7 +10,7 @@ def alpha_to_var(language : GLC):
     new_var_dict = dict()
     new_transition_list = []
     for alpha in used_alphas:
-        var_name = find_new_var_name(upper_ASCII, used_variables)
+        var_name = find_new_var_name(upper_ASCII, POS_INC, used_variables)
         transition = [var_name, alpha]
         new_var_dict[alpha] = var_name
         language.insert_into_transition_list(transition)
@@ -43,10 +33,7 @@ def alpha_to_var(language : GLC):
                 new_transition_list.append([variable, update_rule])
             else:
                 new_transition_list.append(transit)
-
-    for alpha in used_alphas:
-        if alpha in used_new_var:
-            variable = new_var_dict[alpha]
-            new_transition_list.append([variable, alpha])
-
+        else:
+            new_transition_list.append(transit)
+            
     language.set_transitions_list(new_transition_list)

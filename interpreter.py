@@ -1,3 +1,4 @@
+from lexical.greibach_converter import greibach_converter
 from lexical.alpha_to_var import alpha_to_var
 from lexical.useless_variable_terminator import useless_variable_terminator
 from lexical.unitary_rule_terminator import unitary_rule_terminator
@@ -38,8 +39,10 @@ def main(args):
         unitary_rule_terminator(language)
         useless_variable_terminator(language)
         alpha_to_var(language)
+        useless_variable_terminator(language)
+        #print(language.get_transitions_list())
+        greibach_converter(language)
         
-        print(language.get_transitions_list())
         
         '''
         paths = GreibachPaths(language)
