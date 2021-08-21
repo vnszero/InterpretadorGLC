@@ -1,3 +1,5 @@
+from lexical.alpha_to_var import alpha_to_var
+from lexical.useless_variable_terminator import useless_variable_terminator
 from lexical.unitary_rule_terminator import unitary_rule_terminator
 from lexical.lambda_terminator import lambda_terminator
 from structure.tree import Tree
@@ -8,7 +10,7 @@ from structure.greibach_path import GreibachPaths
 from structure.stack import Stack
 from structure.constants import LAMBDA
 from structure.word_keeper import WordKeeper
-from lexical.reviewer import state_and_alpha_review
+from lexical.reviewer import variable_and_alpha_review
 import sys
 
 def main(args):
@@ -20,20 +22,22 @@ def main(args):
     
     if artefact != None:
         language = GLC()
-        language.set_state_list(artefact['glc'][0])
+        language.set_variable_list(artefact['glc'][0])
         language.set_alpha_list(artefact['glc'][1])
         language.set_transitions_list(artefact['glc'][2])
-        language.set_initial_state(artefact['glc'][3])
+        language.set_initial_variable(artefact['glc'][3])
 
-        state_l = language.get_state_list()
+        variable_l = language.get_variable_list()
         alpha_l = language.get_alpha_list()
         transition_l = language.get_transitions_list()
-        ist = language.get_initial_state()
+        ist = language.get_initial_variable()
         
-        state_and_alpha_review(state_l, alpha_l, transition_l, ist)
+        variable_and_alpha_review(variable_l, alpha_l, transition_l, ist)
         
         lambda_terminator(language)
         unitary_rule_terminator(language)
+        useless_variable_terminator(language)
+        alpha_to_var(language)
         print(language.get_transitions_list())
         
         '''

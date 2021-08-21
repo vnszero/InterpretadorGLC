@@ -5,12 +5,12 @@ def remove_substring(pos : int, string : str) -> str:
     return string[:pos] + string[pos+1:]
 
 def lambda_terminator(language : GLC):
-    null_states = []
+    null_variables = []
     new_transition_rules = []
     for transition in language.get_transitions_list():
         if transition[1] == LAMBDA:
-            null_states.append(transition[0])
-            if transition[0] == language.get_initial_state():
+            null_variables.append(transition[0])
+            if transition[0] == language.get_initial_variable():
                 new_transition_rules.append(transition)
         else:
             new_transition_rules.append(transition)
@@ -18,8 +18,8 @@ def lambda_terminator(language : GLC):
     while check_again:
         check_again = False
         for transition in language.get_transitions_list():
-            if transition[1] in null_states and not (transition[0] in null_states):
-                null_states.append(transition[0])
+            if transition[1] in null_variables and not (transition[0] in null_variables):
+                null_variables.append(transition[0])
                 check_again = True
 
     no_lambda_transitions = new_transition_rules
@@ -31,7 +31,7 @@ def lambda_terminator(language : GLC):
 
             position = 0
             while position < len(transition[1]):
-                if transition[1][position] in null_states:
+                if transition[1][position] in null_variables:
                     new_rule = remove_substring(position, transition[1])
                     if new_rule == '':
                         new_rule = LAMBDA
@@ -39,7 +39,7 @@ def lambda_terminator(language : GLC):
 
                     if not (new_transition in no_lambda_transitions) and transition[0] != new_rule:
 
-                        if (new_rule == LAMBDA and transition[0] == language.get_initial_state()) or new_rule != LAMBDA:
+                        if (new_rule == LAMBDA and transition[0] == language.get_initial_variable()) or new_rule != LAMBDA:
                             no_lambda_transitions.append(new_transition)
                             check_again = True
 
