@@ -2,60 +2,51 @@ from structure.GLC import GLC
 from structure.constants import LAMBDA
 from typing import List
 
+def find_new_var_name(upper_ASCII : List, used_variables : List) -> str:
+    name = None
+    while name == None:
+        if chr(upper_ASCII[0]) in used_variables:
+            # already exists, call next
+            upper_ASCII[0] += 1
+        else:
+            name = chr(upper_ASCII[0])
+            upper_ASCII[0] += 1
+    return name
+
 def alpha_to_var(language : GLC):
-    upper_ASCII = 65
-    used_variable = language.get_variable_list()
-    for transition in language.get_transitions_list():
-        variable, rule = transition
-
-        var_check = False
+    upper_ASCII = [65]
+    used_variables = language.get_variable_list()
+    used_alphas = language.get_alpha_list()
+    new_var_dict = dict()
+    new_transition_list = []
+    for alpha in used_alphas:
+        var_name = find_new_var_name(upper_ASCII, used_variables)
+        transition = [var_name, alpha]
+        new_var_dict[alpha] = var_name
+        language.insert_into_transition_list(transition)
+    
+    # there are new transitions for all alphas
+    # let's replace and see if we need then all
+    used_new_var = []
+    for transit in language.get_transitions_list():
+        variable, rule = transit
         if len(rule) > 1:
-            alpha_only_check = False
-            for part_rule in rule:
-                if part_rule in used_variable:
-                    alpha_only_check = True
-            
-            if alpha_only_check:
-                # no var in a rule with len() > 1
-                part_rule = rule[-1]
-                while True:
-                    if chr(upper_ASCII) in used_variable:
-                        upper_ASCII += 1
-                    else:
-                        # new comming
-                        var = chr(upper_ASCII)
-                        language.insert_into_variable_list(var)
-                        new_transition = [var, part_rule]
-                        language.insert_into_transition_list(new_transition)
+            update_rule = rule[0]
+            for instant_rule in rule[1:]:
+                if instant_rule in used_alphas:
+                    update_rule += new_var_dict[instant_rule]
+                    used_new_var.append(instant_rule)
+                else:
+                    update_rule += instant_rule
 
-                        # fix the old one
-                        rule.replace(part_rule, var)
-                        old_transition = [variable, rule]
-                        language.delete_in_transition_list(transition)
-                        language.insert_into_transition_list(old_transition)
+            if update_rule != rule:
+                new_transition_list.append([variable, update_rule])
+            else:
+                new_transition_list.append(transit)
 
-                        # break while
-                        break
+    for alpha in used_alphas:
+        if alpha in used_new_var:
+            variable = new_var_dict[alpha]
+            new_transition_list.append([variable, alpha])
 
-            for part_rule in rule:
-                if part_rule in used_variable:
-                    var_check = True
-                if var_check and part_rule in language.get_alpha_list():
-                    while True:
-                        if chr(upper_ASCII) in used_variable:
-                            upper_ASCII += 1
-                        else:
-                            # new comming
-                            var = chr(upper_ASCII)
-                            language.insert_into_variable_list(var)
-                            new_transition = [var, part_rule]
-                            language.insert_into_transition_list(new_transition)
-
-                            # fix the old one
-                            rule.replace(part_rule, var)
-                            old_transition = [variable, rule]
-                            language.delete_in_transition_list(transition)
-                            language.insert_into_transition_list(old_transition)
-
-                            # break while
-                            break
+    language.set_transitions_list(new_transition_list)

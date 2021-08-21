@@ -38,6 +38,7 @@ def main(args):
         unitary_rule_terminator(language)
         useless_variable_terminator(language)
         alpha_to_var(language)
+        
         print(language.get_transitions_list())
         
         '''
