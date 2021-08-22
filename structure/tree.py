@@ -53,16 +53,17 @@ class Node:
 
                     # if there is a key, there is a path and a new node
                     # path = Path()
-                    path = paths_dict[key]
-                    new_stack = Stack(path.get_stack(), self.stack.get_stack_full())
-                    self.next = Node(alpha, new_stack, self.formed_word, self.depth)
-                    #if self.next.depth_control(word_size_limit)and self.next.stack_control(word_size_limit):
-                    if self.next.depth_control(word_size_limit):
-                        # keep going
-                        self.next.call_next_node(keeper, alpha_list, paths_dict, word_size_limit)
-                    else:
-                        # overflow, just stop tree evolution
-                        pass
+                    
+                    for path in paths_dict[key]:
+                        new_stack = Stack(path.get_stack(), self.stack.get_stack_full())
+                        self.next = Node(alpha, new_stack, self.formed_word, self.depth)
+                        #if self.next.depth_control(word_size_limit)and self.next.stack_control(word_size_limit):
+                        if self.next.depth_control(word_size_limit):
+                            # keep going
+                            self.next.call_next_node(keeper, alpha_list, paths_dict, word_size_limit)
+                        else:
+                            # overflow, just stop tree evolution
+                            pass
 
 class Tree:
     def __init__(self, stack : Stack, alpha : str = LAMBDA):

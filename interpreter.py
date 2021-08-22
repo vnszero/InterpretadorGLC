@@ -40,11 +40,8 @@ def main(args):
         useless_variable_terminator(language)
         alpha_to_var(language)
         useless_variable_terminator(language)
-        #print(language.get_transitions_list())
         greibach_converter(language)
-        
-        
-        '''
+    
         paths = GreibachPaths(language)
         
         stack = Stack(ist)
@@ -55,15 +52,15 @@ def main(args):
         
         # verificar se a linguagem gera lambda
         key = LAMBDA + ist
+        extend_alpha_l = alpha_l
         if key in paths_dict.keys():
             keeper.insert_word(LAMBDA)
-            extend_alpha_l = alpha_l + [LAMBDA]
+            extend_alpha_l += [LAMBDA]
 
         tree.get_root().call_next_node(keeper, extend_alpha_l, paths_dict, word_size_limit)
 
         output.file_generator("words.txt", str(keeper))
         output.file_generator("saida_lang.txt", str(language))
-        '''
-
+        
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

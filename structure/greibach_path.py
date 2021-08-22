@@ -8,10 +8,10 @@ class Path:
         self.stack = stack
     
     def __repr__(self) -> str:
-        return f'{self.alpha}'+', '+f'{self.top}'+' | '+f'{self.stack}'
+        return f'{self.alpha}'+'. '+f'{self.top}'+' | '+f'{self.stack}'
 
     def __str__(self) -> str:
-        return f'{self.alpha}'+', '+f'{self.top}'+' | '+f'{self.stack}'
+        return f'{self.alpha}'+'. '+f'{self.top}'+' | '+f'{self.stack}'
     
     def get_stack(self) -> str:
         return self.stack
@@ -24,7 +24,10 @@ class GreibachPaths:
             top = transition[0]
             stack = transition[1][1:]
             key = alpha + top
-            self.paths_dict[key] = Path(alpha, top, stack)
+            if key in self.paths_dict.keys():
+                self.paths_dict[key].append(Path(alpha, top, stack))
+            else:
+                self.paths_dict[key] = [Path(alpha, top, stack)]
 
     def __repr__(self) -> str:
         string = ''

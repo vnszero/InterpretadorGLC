@@ -152,5 +152,17 @@ def greibach_converter(language : GLC):
                     for e_rule in extend_rules:
                         aux_dict[aux_key].append(e_rule)
                     need_to_repeat = True
-    print(transitions_dict)
-    print(aux_dict)
+
+    # back to List
+    greibach_format_transitions = []
+    for key in transitions_dict:
+        variable = key[0]
+        for rule in transitions_dict[key]:
+            greibach_format_transitions.append([variable, rule])
+    
+    for key in aux_dict:
+        variable = key[0]
+        for rule in aux_dict[key]:
+            greibach_format_transitions.append([variable, rule])
+    
+    language.set_transitions_list(greibach_format_transitions)
