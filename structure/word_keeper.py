@@ -2,6 +2,10 @@ from typing import List
 from structure.constants import LAMBDA
 
 class WordKeeper:
+    '''
+        ex of a WordKeeper
+        [#, aa, aaaa, aaaaaa]
+    '''
     def __init__(self):
         self.word_list = []
 

@@ -1,11 +1,12 @@
 from typing import List
 class Stack:
-    def __init__(self, terms : str, old_stack : List = []):
-        '''
+    '''
+        ex of a Stack
         terms = 'STACK'
-
+        self.stack = ['S', 'T', 'A', 'C', 'K']
         self.stack_top() = 'S'
-        '''
+    '''
+    def __init__(self, terms : str, old_stack : List = []):
         self.stack = old_stack
         for term in terms[::-1]:
             self.stack.append(term)

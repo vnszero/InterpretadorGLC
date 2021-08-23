@@ -3,6 +3,9 @@ from structure.constants import LAMBDA
 from typing import List
 
 def useless_variable_terminator(language : GLC):
+    '''
+        find and remove useless variables from language
+    '''
     # 1st part
     used_variables = []
     discovered_variables = []

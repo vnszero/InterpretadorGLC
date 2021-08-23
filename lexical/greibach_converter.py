@@ -5,6 +5,9 @@ from structure.GLC import GLC
 from structure.stack import Stack
 
 def left_call_only(rules : List, variable : str) -> List:
+    '''
+        find all rules with left call
+    '''
     left_rules = []
     for rule in rules:
         if rule[0] == variable:
@@ -12,6 +15,9 @@ def left_call_only(rules : List, variable : str) -> List:
     return left_rules
 
 def left_call_remover(rules : List, variable : str) -> List:
+    '''
+        find all rules with alphas or different variables first
+    '''
     other_rules = []
     for rule in rules:
         if rule[0] != variable:
@@ -19,6 +25,9 @@ def left_call_remover(rules : List, variable : str) -> List:
     return other_rules
 
 def auxiliar_rule_creator(rules : List, upper_ASCII : List, used_var) -> List and str:
+    '''
+        create a new variable to be used as right caller
+    '''
     var_name = find_new_var_name(upper_ASCII, NEG_INC, used_var)
     transitions = []
     for rule in rules:
@@ -26,7 +35,10 @@ def auxiliar_rule_creator(rules : List, upper_ASCII : List, used_var) -> List an
         transitions.append([var_name, rule[1:] + var_name])
     return transitions, var_name
 
-def right_rule_generator(rules : List, variable : str, right_caller : str):
+def right_rule_generator(rules : List, variable : str, right_caller : str) -> List:
+    '''
+        replace left calls with right calls 
+    '''
     transitions = []
     for rule in rules:
         transitions.append([variable, rule])
@@ -37,14 +49,21 @@ def right_rule_generator(rules : List, variable : str, right_caller : str):
     return transitions
 
 def replace_rule(rules : List, fixed : str) -> List:
+    '''
+        replace variables with his rules
+    '''
     new_rule = []
     for rule in rules:
         new_rule.append(rule + fixed)
     return new_rule
 
 def greibach_converter(language : GLC):
+    '''
+        bring language to a Greibach normal form
+    '''
     upper_ASCII = [90]
-    # remap
+
+    # 1st step, remap
     order = 1
     transitions_dict = dict()
     keys_dict = dict()
@@ -63,7 +82,6 @@ def greibach_converter(language : GLC):
     
     # it is much better to work with a dictionary
     # Why did not I think about it before?
-    # print(transitions_dict)
 
     # 2st step, remove left calls and out orders
     aux_dict = dict()
@@ -74,7 +92,6 @@ def greibach_converter(language : GLC):
         key = keys_dict[variable]
         new_aux_transits = []
         new_transits = []
-        #print(transitions_dict[key])
         need_to_repeat = True
         while need_to_repeat:
             need_to_repeat = False
@@ -99,28 +116,21 @@ def greibach_converter(language : GLC):
                         order += 1
                         need_to_repeat = True
                     elif var_s_ord > int(first_s_ord):
+                        # out order detected
                         extend_rules = replace_rule(transitions_dict[first_s_key], rule[1:])
                         transitions_dict[key].remove(rule)
                         for e_rule in extend_rules:
                             transitions_dict[key].append(e_rule)
                         need_to_repeat = True
 
-            #incorporate
+            # update changes in transitions_dict
             if new_transits != []:
                 transitions_dict[key] = []
                 for transition in new_transits:
                     rule = transition[1]
                     transitions_dict[key].append(rule)
-                #print(transitions_dict[key])
-                #print()
-                #print(aux_dict)
-                #print()
-            #print(variable)
-    #print(transitions_dict)
-    #print(aux_dict)
-    #print()
 
-    #3rd step
+    # 3rd step, replace variables in left
     while not(order_stack.is_empty()):
         re_ord = int(order_stack.get_stack_top())
         variable = keys_order[re_ord]
@@ -138,7 +148,7 @@ def greibach_converter(language : GLC):
                         transitions_dict[key].append(e_rule)
                     need_to_repeat = True
     
-    #aux fix
+    # fixing the aux variables
     need_to_repeat = True
     while need_to_repeat:
         need_to_repeat = False
@@ -153,16 +163,18 @@ def greibach_converter(language : GLC):
                         aux_dict[aux_key].append(e_rule)
                     need_to_repeat = True
 
-    # back to List
+    # Dictionary to List of Lists
     greibach_format_transitions = []
     for key in transitions_dict:
         variable = key[0]
         for rule in transitions_dict[key]:
             greibach_format_transitions.append([variable, rule])
     
+    # dont forget the aux dictinary
     for key in aux_dict:
         variable = key[0]
         for rule in aux_dict[key]:
             greibach_format_transitions.append([variable, rule])
     
+    # update language
     language.set_transitions_list(greibach_format_transitions)

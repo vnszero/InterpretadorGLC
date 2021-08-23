@@ -1,10 +1,16 @@
 from typing import Dict, List
 from structure.stack import Stack
-from structure.greibach_path import Path
 from structure.word_keeper import WordKeeper
 from structure.constants import LAMBDA, OVERFLOW
 
 class Node:
+    '''
+        ex of a Node:
+        holds the reference to only the next Node (not all, overwrite)
+        holds his depth in tree
+        holds the current formed word
+        holds an stack of next variables
+    '''
     def __init__(self, alpha : str, stack : Stack, word : str = '', depth : int = 0):
         self.next = None
         if alpha == LAMBDA:
@@ -12,48 +18,44 @@ class Node:
             self.depth = depth
         else:
             self.depth = depth + 1
+
         if alpha == LAMBDA:
             # keep the old formed word
             self.formed_word = word
         else:
             self.formed_word = word + alpha
-        self.stack = stack
 
-    def stack_control(self, word_size_limit) -> bool:
-        if self.stack.get_stack_len() > word_size_limit:
-            return OVERFLOW
-        else:
-            return not OVERFLOW
-        
+        self.stack = stack
+    
+    def get_formed_word(self) -> str:
+        return self.formed_word
+
     def depth_control(self, word_size_limit) -> bool:
+        '''
+            verify the limit of search in Nodes
+        '''
         if self.depth > word_size_limit:
             return OVERFLOW
         else:
             return not OVERFLOW
-    
-    def get_formed_word(self):
-        return self.formed_word
 
     def call_next_node(self, keeper : WordKeeper, alpha_list : List, paths_dict : Dict, word_size_limit : int):
         '''
             verify if it is a reconized word
             for each alpha allowed, create new Node
         '''
-
         # take a look at the stack
         if self.stack.get_stack_len() == 0:
             # empty stack, so we got a word
             keeper.insert_word(self.formed_word)
 
-        top = self.stack.get_stack_top() # pop effect
+        # pop effect
+        top = self.stack.get_stack_top()
         if top != 'END':
             for alpha in alpha_list:
                 key = alpha + top
                 if key in paths_dict.keys():
-
                     # if there is a key, there is a path and a new node
-                    # path = Path()
-                    
                     for path in paths_dict[key]:
                         new_stack = Stack(path.get_stack(), self.stack.get_stack_full())
                         self.next = Node(alpha, new_stack, self.formed_word, self.depth)
@@ -66,6 +68,10 @@ class Node:
                             pass
 
 class Tree:
+    '''
+        ex of a Tree:
+        only hold the root and start Node
+    '''
     def __init__(self, stack : Stack, alpha : str = LAMBDA):
         self.root = Node(alpha, stack)
     

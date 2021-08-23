@@ -3,6 +3,9 @@ from structure.GLC import GLC
 from structure.constants import LAMBDA
 
 def lambda_terminator(language : GLC):
+    '''
+        track and remove lambdas from variable, except the start one
+    '''
     null_variables = []
     new_transition_rules = []
     for transition in language.get_transitions_list():
@@ -24,9 +27,7 @@ def lambda_terminator(language : GLC):
     check_again = True
     while check_again:
         check_again = False
-
         for transition in new_transition_rules:
-
             position = 0
             while position < len(transition[1]):
                 if transition[1][position] in null_variables:

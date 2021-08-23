@@ -2,6 +2,10 @@ from typing import Dict
 from structure.GLC import GLC
 
 class Path:
+    '''
+        ex of a Path: 
+        a. G | UGU
+    '''
     def __init__(self, alpha : str, top : str, stack : str):
         self.alpha = alpha
         self.top = top
@@ -17,6 +21,11 @@ class Path:
         return self.stack
 
 class GreibachPaths:
+    '''
+        ex of a GreibachPath:
+        aG : [a. G | UGU, a. G | GU, a. G | UG]
+        bU : [b. U | ]
+    '''
     def __init__(self, language : GLC):
         self.paths_dict = dict()
         for transition in language.get_transitions_list():

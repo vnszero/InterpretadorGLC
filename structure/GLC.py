@@ -1,6 +1,13 @@
 from typing import List
 
 class GLC:
+    '''
+        ex of a GLC:
+        P -> aA
+        A -> BAB
+        A -> BB
+        B -> bb
+    '''
     def __init__(self):
         self.variable_list = None
         self.alpha_list = None

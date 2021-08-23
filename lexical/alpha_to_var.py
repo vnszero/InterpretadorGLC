@@ -4,19 +4,22 @@ from structure.GLC import GLC
 from typing import List
 
 def alpha_to_var(language : GLC):
+    '''
+        replace alphas with new variables in middle of rules
+    '''
     upper_ASCII = [65]
     used_variables = language.get_variable_list()
     used_alphas = language.get_alpha_list()
     new_var_dict = dict()
     new_transition_list = []
+    # there are new variables for all alphas
     for alpha in used_alphas:
         var_name = find_new_var_name(upper_ASCII, POS_INC, used_variables)
         transition = [var_name, alpha]
         new_var_dict[alpha] = var_name
         language.insert_into_transition_list(transition)
     
-    # there are new transitions for all alphas
-    # let's replace and see if we need then all
+    # maybe some of then will become useless
     used_new_var = []
     for transit in language.get_transitions_list():
         variable, rule = transit

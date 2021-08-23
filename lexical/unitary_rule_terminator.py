@@ -3,6 +3,9 @@ from structure.constants import LAMBDA
 from typing import List
 
 def unitary_rule_terminator(language : GLC):
+    '''
+        find and remove unitary rules from language
+    '''
     chaining_dict = dict()
     for variable in language.get_variable_list():
         chain_list = []
