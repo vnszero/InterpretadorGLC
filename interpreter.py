@@ -100,6 +100,9 @@ def main(args):
 
             # to files
             output.file_generator("output_words.txt", str(keeper))
+
+            # to command line
+            print(str(keeper))
         
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
